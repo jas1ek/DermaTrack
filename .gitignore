@@ -1,0 +1,17 @@
+.DS_Store
+
+# Xcode
+DerivedData/
+**/DerivedData/
+build/
+**/build/
+xcuserdata/
+**/xcuserdata/
+
+# Swift
+.build/
+.swiftpm/
+
+# Secrets
+.env
+.env.*

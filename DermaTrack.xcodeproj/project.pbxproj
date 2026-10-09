@@ -1,0 +1,546 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 110;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		98A5B8B530798560001A0C4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98A5B89F3079855F001A0C4A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 98A5B8A63079855F001A0C4A;
+			remoteInfo = DermaTrack;
+		};
+		98A5B8BF30798560001A0C4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98A5B89F3079855F001A0C4A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 98A5B8A63079855F001A0C4A;
+			remoteInfo = DermaTrack;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		98A5B8A73079855F001A0C4A /* DermaTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DermaTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		98A5B8B430798560001A0C4A /* DermaTrackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DermaTrackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		98A5B8BE30798560001A0C4A /* DermaTrackUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DermaTrackUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		98A5B8A93079855F001A0C4A /* DermaTrack */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DermaTrack;
+			sourceTree = "<group>";
+		};
+		98A5B8B730798560001A0C4A /* DermaTrackTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DermaTrackTests;
+			sourceTree = "<group>";
+		};
+		98A5B8C130798560001A0C4A /* DermaTrackUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DermaTrackUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		98A5B8A43079855F001A0C4A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+		98A5B8B130798560001A0C4A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+		98A5B8BB30798560001A0C4A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		98A5B89E3079855F001A0C4A = {
+			isa = PBXGroup;
+			children = (
+				98A5B8A93079855F001A0C4A /* DermaTrack */,
+				98A5B8B730798560001A0C4A /* DermaTrackTests */,
+				98A5B8C130798560001A0C4A /* DermaTrackUITests */,
+				98A5B8A83079855F001A0C4A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		98A5B8A83079855F001A0C4A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				98A5B8A73079855F001A0C4A /* DermaTrack.app */,
+				98A5B8B430798560001A0C4A /* DermaTrackTests.xctest */,
+				98A5B8BE30798560001A0C4A /* DermaTrackUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		98A5B8A63079855F001A0C4A /* DermaTrack */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 98A5B8C630798560001A0C4A /* Build configuration list for PBXNativeTarget "DermaTrack" */;
+			buildPhases = (
+				98A5B8A33079855F001A0C4A /* Sources */,
+				98A5B8A43079855F001A0C4A /* Frameworks */,
+				98A5B8A53079855F001A0C4A /* Resources */,
+			);
+			buildRules = (
+			);
+			fileSystemSynchronizedGroups = (
+				98A5B8A93079855F001A0C4A /* DermaTrack */,
+			);
+			name = DermaTrack;
+			productName = DermaTrack;
+			productReference = 98A5B8A73079855F001A0C4A /* DermaTrack.app */;
+			productType = "com.apple.product-type.application";
+		};
+		98A5B8B330798560001A0C4A /* DermaTrackTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 98A5B8C930798560001A0C4A /* Build configuration list for PBXNativeTarget "DermaTrackTests" */;
+			buildPhases = (
+				98A5B8B030798560001A0C4A /* Sources */,
+				98A5B8B130798560001A0C4A /* Frameworks */,
+				98A5B8B230798560001A0C4A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				98A5B8B630798560001A0C4A /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				98A5B8B730798560001A0C4A /* DermaTrackTests */,
+			);
+			name = DermaTrackTests;
+			productName = DermaTrackTests;
+			productReference = 98A5B8B430798560001A0C4A /* DermaTrackTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		98A5B8BD30798560001A0C4A /* DermaTrackUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 98A5B8CC30798560001A0C4A /* Build configuration list for PBXNativeTarget "DermaTrackUITests" */;
+			buildPhases = (
+				98A5B8BA30798560001A0C4A /* Sources */,
+				98A5B8BB30798560001A0C4A /* Frameworks */,
+				98A5B8BC30798560001A0C4A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				98A5B8C030798560001A0C4A /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				98A5B8C130798560001A0C4A /* DermaTrackUITests */,
+			);
+			name = DermaTrackUITests;
+			productName = DermaTrackUITests;
+			productReference = 98A5B8BE30798560001A0C4A /* DermaTrackUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		98A5B89F3079855F001A0C4A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2700;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					98A5B8A63079855F001A0C4A = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					98A5B8B330798560001A0C4A = {
+						CreatedOnToolsVersion = 27.0;
+						TestTargetID = 98A5B8A63079855F001A0C4A;
+					};
+					98A5B8BD30798560001A0C4A = {
+						CreatedOnToolsVersion = 27.0;
+						TestTargetID = 98A5B8A63079855F001A0C4A;
+					};
+				};
+			};
+			buildConfigurationList = 98A5B8A23079855F001A0C4A /* Build configuration list for PBXProject "DermaTrack" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 98A5B89E3079855F001A0C4A;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 98A5B8A83079855F001A0C4A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				98A5B8A63079855F001A0C4A /* DermaTrack */,
+				98A5B8B330798560001A0C4A /* DermaTrackTests */,
+				98A5B8BD30798560001A0C4A /* DermaTrackUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		98A5B8A53079855F001A0C4A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+		98A5B8B230798560001A0C4A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+		98A5B8BC30798560001A0C4A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		98A5B8A33079855F001A0C4A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+		98A5B8B030798560001A0C4A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+		98A5B8BA30798560001A0C4A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		98A5B8B630798560001A0C4A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 98A5B8A63079855F001A0C4A /* DermaTrack */;
+			targetProxy = 98A5B8B530798560001A0C4A /* PBXContainerItemProxy */;
+		};
+		98A5B8C030798560001A0C4A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 98A5B8A63079855F001A0C4A /* DermaTrack */;
+			targetProxy = 98A5B8BF30798560001A0C4A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		98A5B8C430798560001A0C4A /* Debug configuration for PBXProject "DermaTrack" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		98A5B8C530798560001A0C4A /* Release configuration for PBXProject "DermaTrack" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		98A5B8C730798560001A0C4A /* Debug configuration for PBXNativeTarget "DermaTrack" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = polsl.DermaTrack;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		98A5B8C830798560001A0C4A /* Release configuration for PBXNativeTarget "DermaTrack" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = polsl.DermaTrack;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		98A5B8CA30798560001A0C4A /* Debug configuration for PBXNativeTarget "DermaTrackTests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = polsl.DermaTrackTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DermaTrack.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DermaTrack";
+			};
+			name = Debug;
+		};
+		98A5B8CB30798560001A0C4A /* Release configuration for PBXNativeTarget "DermaTrackTests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = polsl.DermaTrackTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DermaTrack.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DermaTrack";
+			};
+			name = Release;
+		};
+		98A5B8CD30798560001A0C4A /* Debug configuration for PBXNativeTarget "DermaTrackUITests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = polsl.DermaTrackUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = DermaTrack;
+			};
+			name = Debug;
+		};
+		98A5B8CE30798560001A0C4A /* Release configuration for PBXNativeTarget "DermaTrackUITests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = polsl.DermaTrackUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = DermaTrack;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		98A5B8A23079855F001A0C4A /* Build configuration list for PBXProject "DermaTrack" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				98A5B8C430798560001A0C4A /* Debug configuration for PBXProject "DermaTrack" */,
+				98A5B8C530798560001A0C4A /* Release configuration for PBXProject "DermaTrack" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		98A5B8C630798560001A0C4A /* Build configuration list for PBXNativeTarget "DermaTrack" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				98A5B8C730798560001A0C4A /* Debug configuration for PBXNativeTarget "DermaTrack" */,
+				98A5B8C830798560001A0C4A /* Release configuration for PBXNativeTarget "DermaTrack" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		98A5B8C930798560001A0C4A /* Build configuration list for PBXNativeTarget "DermaTrackTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				98A5B8CA30798560001A0C4A /* Debug configuration for PBXNativeTarget "DermaTrackTests" */,
+				98A5B8CB30798560001A0C4A /* Release configuration for PBXNativeTarget "DermaTrackTests" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		98A5B8CC30798560001A0C4A /* Build configuration list for PBXNativeTarget "DermaTrackUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				98A5B8CD30798560001A0C4A /* Debug configuration for PBXNativeTarget "DermaTrackUITests" */,
+				98A5B8CE30798560001A0C4A /* Release configuration for PBXNativeTarget "DermaTrackUITests" */,
+			);
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 98A5B89F3079855F001A0C4A /* Project object */;
+	validationLevel = 1;
+}
