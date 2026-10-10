@@ -1,9 +1,32 @@
+
 import SwiftUI
 
 struct SettingsView: View {
+    @AppStorage("bodySilhouetteStyle")
+    private var silhouetteStyle = BodySilhouetteStyle.male.rawValue
+
     var body: some View {
         NavigationStack {
-            List {
+            Form {
+                Section("Mapa ciała") {
+                    Picker(
+                        "Rodzaj sylwetki",
+                        selection: $silhouetteStyle
+                    ) {
+                        ForEach(BodySilhouetteStyle.allCases) { style in
+                            Text(style.title)
+                                .tag(style.rawValue)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+
+                    Text(
+                        "Wybrana sylwetka będzie używana na mapie ciała."
+                    )
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                }
+
                 Section("Informacje") {
                     LabeledContent(
                         "Aplikacja",
@@ -24,4 +47,3 @@ struct SettingsView: View {
 #Preview {
     SettingsView()
 }
-
