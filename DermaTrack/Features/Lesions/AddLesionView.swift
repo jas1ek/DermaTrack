@@ -20,16 +20,22 @@ struct AddLesionView: View {
         "Inna zmiana"
     ]
 
-    init(existingLesion: Lesion? = nil) {
+    init(
+        existingLesion: Lesion? = nil,
+        initialLocation: String = ""
+    ) {
         self.existingLesion = existingLesion
 
         _selectedType = State(
             initialValue: existingLesion?.name
                 ?? "Nie wiem / do oceny"
         )
+
         _location = State(
-            initialValue: existingLesion?.location ?? ""
+            initialValue: existingLesion?.location
+                ?? initialLocation
         )
+
         _notes = State(
             initialValue: existingLesion?.notes ?? ""
         )
