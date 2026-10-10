@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var lesionService = LesionService()
+
     var body: some View {
         TabView {
             HomeView()
@@ -31,6 +33,7 @@ struct ContentView: View {
                 }
         }
         .tint(.teal)
+        .environmentObject(lesionService)
     }
 }
 
