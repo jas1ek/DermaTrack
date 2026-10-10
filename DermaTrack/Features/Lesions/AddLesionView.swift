@@ -6,7 +6,10 @@ struct AddLesionView: View {
     @EnvironmentObject private var lesionService: LesionService
 
     let existingLesion: Lesion?
-
+    let initialMapSide: String?
+    let initialMapX: Double?
+    let initialMapY: Double?
+    
     @State private var selectedType: String
     @State private var location: String
     @State private var notes: String
@@ -20,22 +23,27 @@ struct AddLesionView: View {
         "Inna zmiana"
     ]
 
+
     init(
         existingLesion: Lesion? = nil,
-        initialLocation: String = ""
+        initialLocation: String = "",
+        initialMapSide: String? = nil,
+        initialMapX: Double? = nil,
+        initialMapY: Double? = nil
     ) {
         self.existingLesion = existingLesion
+        self.initialMapSide = initialMapSide
+        self.initialMapX = initialMapX
+        self.initialMapY = initialMapY
 
         _selectedType = State(
             initialValue: existingLesion?.name
                 ?? "Nie wiem / do oceny"
         )
-
         _location = State(
             initialValue: existingLesion?.location
                 ?? initialLocation
         )
-
         _notes = State(
             initialValue: existingLesion?.notes ?? ""
         )
@@ -120,7 +128,10 @@ struct AddLesionView: View {
             let lesion = Lesion(
                 name: selectedType,
                 location: trimmedLocation,
-                notes: notes
+                notes: notes,
+                mapSide: initialMapSide,
+                mapX: initialMapX,
+                mapY: initialMapY
             )
             lesionService.add(lesion)
         }

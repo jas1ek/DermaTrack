@@ -5,63 +5,31 @@ struct BodyMapView: View {
     @EnvironmentObject private var lesionService: LesionService
 
     @State private var selectedSide = BodySide.front
-    @State private var selectedArea: String?
+    @State private var selectedPosition: CGPoint?
     @State private var showingAddLesion = false
 
     enum BodySide: String, CaseIterable {
-        case front = "Przód"
-        case back = "Tył"
-    }
+        case front = "front"
+        case back = "back"
 
-    private var areas: [String] {
-        switch selectedSide {
-        case .front:
-            return [
-                "Twarz",
-                "Szyja",
-                "Klatka piersiowa",
-                "Brzuch",
-                "Lewe ramię",
-                "Prawe ramię",
-                "Lewe przedramię",
-                "Prawe przedramię",
-                "Lewa dłoń",
-                "Prawa dłoń",
-                "Lewe udo",
-                "Prawe udo",
-                "Lewe podudzie",
-                "Prawe podudzie",
-                "Lewa stopa",
-                "Prawa stopa"
-            ]
-
-        case .back:
-            return [
-                "Tył głowy",
-                "Kark",
-                "Górna część pleców",
-                "Dolna część pleców",
-                "Lewy bark",
-                "Prawy bark",
-                "Lewe ramię - tył",
-                "Prawe ramię - tył",
-                "Lewy pośladek",
-                "Prawy pośladek",
-                "Lewe udo - tył",
-                "Prawe udo - tył",
-                "Lewa łydka",
-                "Prawa łydka"
-            ]
+        var title: String {
+            self == .front ? "Przód" : "Tył"
         }
     }
 
-    private var matchingLesions: [Lesion] {
-        guard let selectedArea else {
-            return []
+    private var mappedLesions: [Lesion] {
+        lesionService.lesions.filter {
+            $0.mapSide == selectedSide.rawValue &&
+            $0.mapX != nil &&
+            $0.mapY != nil
         }
+    }
 
-        return lesionService.lesions.filter {
-            $0.location == selectedArea
+    private var unmappedLesions: [Lesion] {
+        lesionService.lesions.filter {
+            $0.mapX == nil ||
+            $0.mapY == nil ||
+            $0.mapSide == nil
         }
     }
 
@@ -71,107 +39,193 @@ struct BodyMapView: View {
                 VStack(spacing: 20) {
                     Picker("Widok ciała", selection: $selectedSide) {
                         ForEach(BodySide.allCases, id: \.self) { side in
-                            Text(side.rawValue).tag(side)
+                            Text(side.title).tag(side)
                         }
                     }
                     .pickerStyle(.segmented)
-
-                    Image(systemName: "figure.stand")
-                        .font(.system(size: 100))
-                        .foregroundStyle(.teal)
-                        .frame(height: 150)
-                        .accessibilityHidden(true)
-
-                    Text("Wybierz obszar ciała")
-                        .font(.headline)
-
-                    LazyVGrid(
-                        columns: [
-                            GridItem(.flexible()),
-                            GridItem(.flexible())
-                        ],
-                        spacing: 12
-                    ) {
-                        ForEach(areas, id: \.self) { area in
-                            Button {
-                                selectedArea = area
-                            } label: {
-                                Text(area)
-                                    .font(.subheadline)
-                                    .frame(maxWidth: .infinity)
-                                    .frame(minHeight: 55)
-                                    .padding(.horizontal, 6)
-                                    .background(
-                                        selectedArea == area
-                                            ? Color.teal.opacity(0.2)
-                                            : Color.gray.opacity(0.1)
-                                    )
-                                    .clipShape(
-                                        RoundedRectangle(
-                                            cornerRadius: 12
-                                        )
-                                    )
-                            }
-                            .buttonStyle(.plain)
-                        }
+                    .onChange(of: selectedSide) { _, _ in
+                        selectedPosition = nil
                     }
 
-                    if let selectedArea {
-                        VStack(alignment: .leading, spacing: 14) {
-                            Text(selectedArea)
-                                .font(.title3.bold())
+                    Text("Dotknij miejsca na sylwetce")
+                        .font(.headline)
 
-                            if matchingLesions.isEmpty {
-                                Text("Brak zapisanych zmian w tym obszarze.")
-                                    .foregroundStyle(.secondary)
-                            } else {
-                                ForEach(matchingLesions) { lesion in
-                                    NavigationLink {
-                                        LesionDetailView(lesionID: lesion.id)
-                                    } label: {
-                                        HStack {
+                    Text("Kolorowe punkty oznaczają zapisane zmiany.")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+
+                    bodyDiagram
+
+                    if selectedPosition != nil {
+                        Button {
+                            showingAddLesion = true
+                        } label: {
+                            Label(
+                                "Dodaj zmianę w wybranym miejscu",
+                                systemImage: "plus.circle.fill"
+                            )
+                            .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }
+
+                    if !unmappedLesions.isEmpty {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Zmiany bez punktu na mapie")
+                                .font(.headline)
+
+                            ForEach(unmappedLesions) { lesion in
+                                NavigationLink {
+                                    LesionDetailView(
+                                        lesionID: lesion.id
+                                    )
+                                } label: {
+                                    HStack {
+                                        VStack(alignment: .leading) {
                                             Text(lesion.name)
-                                            Spacer()
-                                            Image(systemName: "chevron.right")
+                                            Text(lesion.location)
+                                                .font(.caption)
+                                                .foregroundStyle(.secondary)
                                         }
-                                        .padding()
-                                        .background(.regularMaterial)
-                                        .clipShape(
-                                            RoundedRectangle(
-                                                cornerRadius: 12
-                                            )
-                                        )
+                                        Spacer()
+                                        Image(systemName: "chevron.right")
                                     }
                                 }
                             }
-
-                            Button {
-                                showingAddLesion = true
-                            } label: {
-                                Label(
-                                    "Dodaj zmianę w tym miejscu",
-                                    systemImage: "plus.circle.fill"
-                                )
-                                .frame(maxWidth: .infinity)
-                            }
-                            .buttonStyle(.borderedProminent)
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.top, 12)
+                        .padding()
                     }
                 }
                 .padding()
             }
             .navigationTitle("Mapa ciała")
-            .onChange(of: selectedSide) { _, _ in
-                selectedArea = nil
-            }
             .sheet(isPresented: $showingAddLesion) {
-                AddLesionView(
-                    initialLocation: selectedArea ?? ""
-                )
+                if let position = selectedPosition {
+                    AddLesionView(
+                        initialLocation: suggestedLocation(
+                            for: position
+                        ),
+                        initialMapSide: selectedSide.rawValue,
+                        initialMapX: Double(position.x),
+                        initialMapY: Double(position.y)
+                    )
+                }
             }
         }
+    }
+
+    private var bodyDiagram: some View {
+        GeometryReader { geometry in
+            ZStack {
+                BodySilhouette()
+                    .fill(Color.teal.opacity(0.25))
+                    .overlay {
+                        BodySilhouette()
+                            .stroke(
+                                Color.teal,
+                                lineWidth: 2
+                            )
+                    }
+                    .contentShape(BodySilhouette())
+                    .onTapGesture { location in
+                        let bounds = CGRect(
+                            origin: .zero,
+                            size: geometry.size
+                        )
+
+                        let silhouette = BodySilhouette()
+                            .path(in: bounds)
+
+                        guard silhouette.contains(location) else {
+                            return
+                        }
+
+                        selectedPosition = CGPoint(
+                            x: location.x / geometry.size.width,
+                            y: location.y / geometry.size.height
+                        )
+                    }
+
+                ForEach(mappedLesions) { lesion in
+                    if let x = lesion.mapX,
+                       let y = lesion.mapY {
+                        NavigationLink {
+                            LesionDetailView(lesionID: lesion.id)
+                        } label: {
+                            Circle()
+                                .fill(Color.orange)
+                                .frame(width: 20, height: 20)
+                                .overlay {
+                                    Circle()
+                                        .stroke(
+                                            .white,
+                                            lineWidth: 2
+                                        )
+                                }
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel(
+                            "\(lesion.name), \(lesion.location)"
+                        )
+                        .position(
+                            x: geometry.size.width * x,
+                            y: geometry.size.height * y
+                        )
+                    }
+                }
+
+                if let position = selectedPosition {
+                    Circle()
+                        .stroke(
+                            Color.blue,
+                            style: StrokeStyle(
+                                lineWidth: 3,
+                                dash: [5, 3]
+                            )
+                        )
+                        .frame(width: 30, height: 30)
+                        .position(
+                            x: geometry.size.width * position.x,
+                            y: geometry.size.height * position.y
+                        )
+                        .allowsHitTesting(false)
+                }
+            }
+        }
+        .frame(width: 260, height: 420)
+        .frame(maxWidth: .infinity)
+    }
+
+    private func suggestedLocation(
+        for position: CGPoint
+    ) -> String {
+        let prefix = selectedSide.title
+
+        if position.y < 0.2 {
+            return "\(prefix) - głowa"
+        }
+
+        if position.x < 0.32 {
+            return "\(prefix) - lewa strona / ramię"
+        }
+
+        if position.x > 0.68 {
+            return "\(prefix) - prawa strona / ramię"
+        }
+
+        if position.y < 0.5 {
+            return selectedSide == .front
+                ? "Klatka piersiowa / brzuch"
+                : "Plecy"
+        }
+
+        if position.y < 0.6 {
+            return "Okolica bioder"
+        }
+
+        return position.x < 0.5
+            ? "Lewa noga"
+            : "Prawa noga"
     }
 }
 
