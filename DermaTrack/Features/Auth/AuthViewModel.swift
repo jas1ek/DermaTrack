@@ -7,6 +7,7 @@
 
 
 
+
 import Foundation
 import Combine
 import Supabase
@@ -18,31 +19,59 @@ final class AuthViewModel: ObservableObject {
     @Published private(set) var isLoading = true
     @Published private(set) var userId: UUID?
 
+    // Rola zalogowanego użytkownika
+    @Published private(set) var userRole: UserRole?
+
     @Published var errorMessage: String?
 
     private let authService = AuthService.shared
+    private let profileService = ProfileService()
 
-    // Przywracanie zapisanej sesji
+    //Pobieranie roli użytkownika
+
+    func loadUserRole() async {
+        do {
+            let profile = try await profileService.getCurrentProfile()
+            userRole = profile.role
+        } catch {
+            userRole = nil
+            errorMessage = "Nie można odczytać roli użytkownika: \(error.localizedDescription)"
+        }
+    }
+
+    //Przywracanie zapisanej sesji
+
     func restoreSession() async {
         isLoading = true
+        errorMessage = nil
+
         defer { isLoading = false }
 
         let active = await authService.isLoggedIn()
+
         let id = active
             ? authService.currentUserID()
             : nil
 
         userId = id
         isLoggedIn = active && id != nil
+
+        if isLoggedIn {
+            await loadUserRole()
+        } else {
+            userRole = nil
+        }
     }
 
-    // Logowanie
+    //Logowanie
+
     func login(
         email: String,
         password: String
     ) async {
         isLoading = true
         errorMessage = nil
+
         defer { isLoading = false }
 
         do {
@@ -60,15 +89,27 @@ final class AuthViewModel: ObservableObject {
             userId = authService.currentUserID()
             isLoggedIn = userId != nil
 
+            if isLoggedIn {
+                await loadUserRole()
+            } else {
+                userRole = nil
+            }
+
         } catch {
+            isLoggedIn = false
+            userId = nil
+            userRole = nil
+
             errorMessage = "Nieprawidłowy e-mail lub hasło."
         }
     }
 
-    // Wylogowanie
+    //Wylogowanie
+
     func logout() async {
         isLoading = true
         errorMessage = nil
+
         defer { isLoading = false }
 
         do {
@@ -76,6 +117,7 @@ final class AuthViewModel: ObservableObject {
 
             isLoggedIn = false
             userId = nil
+            userRole = nil
 
         } catch {
             errorMessage = "Nie udało się wylogować."
