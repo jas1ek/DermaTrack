@@ -59,6 +59,8 @@ struct AuthRootView: View {
 
                 Text("Witaj w panelu pacjenta")
                     .foregroundStyle(.secondary)
+                
+                StorageTestView()
 
                 Button("Wyloguj się") {
                     Task {

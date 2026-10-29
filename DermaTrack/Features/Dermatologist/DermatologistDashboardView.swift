@@ -6,32 +6,37 @@
 //
 
 
+
 import SwiftUI
 
 struct DermatologistDashboardView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 20) {
+            ScrollView {
+                VStack(spacing: 20) {
 
-                Image(systemName: "cross.case.fill")
-                    .font(.system(size: 55))
-                    .foregroundStyle(.blue)
+                    Image(systemName: "cross.case.fill")
+                        .font(.system(size: 55))
+                        .foregroundStyle(.blue)
 
-                Text("Panel dermatologa")
-                    .font(.title)
-                    .bold()
+                    Text("Panel dermatologa")
+                        .font(.title)
+                        .bold()
 
-                Text("Zalogowano jako dermatolog")
-                    .foregroundStyle(.secondary)
+                    Text("Zalogowano jako dermatolog")
+                        .foregroundStyle(.secondary)
 
-                Text("Tutaj pojawią się znamiona udostępnione przez pacjentów.")
-                    .multilineTextAlignment(.center)
-                    .padding()
+                    Text("Tutaj pojawią się znamiona udostępnione przez pacjentów.")
+                        .multilineTextAlignment(.center)
+                        .padding()
 
-                Spacer()
+                    // Tymczasowy test zabezpieczeń Supabase
+                    StorageTestView()
+
+                }
+                .padding()
             }
-            .padding()
             .navigationTitle("DermaTrack")
         }
     }
