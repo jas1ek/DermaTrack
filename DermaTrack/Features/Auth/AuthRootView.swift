@@ -61,6 +61,7 @@ struct AuthRootView: View {
                     .foregroundStyle(.secondary)
                 
                 StorageTestView()
+                RoleSecurityTestView()
 
                 Button("Wyloguj się") {
                     Task {
