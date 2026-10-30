@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  DermaTrack
 //
-//  Created by Jan Bobrzyk on 09/10/2026.
+//  Created by Jan Bobrzyk and Julia Marek on 09/10/2026.
 //
 
 import SwiftUI

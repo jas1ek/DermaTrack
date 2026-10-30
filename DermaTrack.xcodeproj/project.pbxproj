@@ -371,6 +371,9 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "DermaTrack potrzebuje dostępu do aparatu, aby wykonywać zdjęcia zmian skórnych i dokumentować je w czasie.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "DermaTrack korzysta z lokalizacji podczas używania aplikacji, aby wyszukiwać gabinety dermatologiczne w pobliżu.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "DermaTrack potrzebuje dostępu do biblioteki zdjęć, aby umożliwić przeglądanie i dodawanie wybranych fotografii do historii zmian skórnych.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -402,6 +405,9 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "DermaTrack potrzebuje dostępu do aparatu, aby wykonywać zdjęcia zmian skórnych i dokumentować je w czasie.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "DermaTrack korzysta z lokalizacji podczas używania aplikacji, aby wyszukiwać gabinety dermatologiczne w pobliżu.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "DermaTrack potrzebuje dostępu do biblioteki zdjęć, aby umożliwić przeglądanie i dodawanie wybranych fotografii do historii zmian skórnych.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

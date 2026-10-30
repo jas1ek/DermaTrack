@@ -137,7 +137,7 @@ final class CameraManager: NSObject, ObservableObject,
     }
 
     // MARK: - Odbiór fotografii
-
+    
 
     nonisolated func photoOutput(
         _ output: AVCapturePhotoOutput,
