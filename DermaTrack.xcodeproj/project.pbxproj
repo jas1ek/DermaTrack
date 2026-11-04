@@ -34,9 +34,22 @@
 		98BE0DEE309B98E500BB8BB5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		98BE0DF5309BA5AA00BB8BB5 /* Exceptions for "DermaTrack" folder in "DermaTrack" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 98A5B8A63079855F001A0C4A /* DermaTrack */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		98A5B8A93079855F001A0C4A /* DermaTrack */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				98BE0DF5309BA5AA00BB8BB5 /* Exceptions for "DermaTrack" folder in "DermaTrack" target */,
+			);
 			path = DermaTrack;
 			sourceTree = "<group>";
 		};
@@ -378,9 +391,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YY9KQ54ZW7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DermaTrack/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "DermaTrack potrzebuje dostępu do aparatu, aby wykonywać zdjęcia zmian skórnych i dokumentować je w czasie.";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "DermaTrack korzysta z Face ID, aby chronić dostęp do dokumentacji zmian skórnych.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "DermaTrack korzysta z lokalizacji podczas używania aplikacji, aby wyszukiwać gabinety dermatologiczne w pobliżu.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "DermaTrack potrzebuje dostępu do biblioteki zdjęć, aby umożliwić przeglądanie i dodawanie wybranych fotografii do historii zmian skórnych.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -412,9 +428,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YY9KQ54ZW7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DermaTrack/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "DermaTrack potrzebuje dostępu do aparatu, aby wykonywać zdjęcia zmian skórnych i dokumentować je w czasie.";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "DermaTrack korzysta z Face ID, aby chronić dostęp do dokumentacji zmian skórnych.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "DermaTrack korzysta z lokalizacji podczas używania aplikacji, aby wyszukiwać gabinety dermatologiczne w pobliżu.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "DermaTrack potrzebuje dostępu do biblioteki zdjęć, aby umożliwić przeglądanie i dodawanie wybranych fotografii do historii zmian skórnych.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

@@ -1,9 +1,8 @@
-
 import SwiftUI
 import AVFoundation
 import UIKit
 
-// MARK: - Podgląd obrazu z aparatu
+// MARK: - Podgląd aparatu
 
 final class CameraPreviewUIView: UIView {
 
@@ -37,7 +36,7 @@ struct CameraPreview: UIViewRepresentable {
     }
 }
 
-// MARK: - Ekran aparatu DermaTrack
+// MARK: - Aparat z nakładką poprzedniego zdjęcia
 
 struct CameraView: View {
 
@@ -49,9 +48,20 @@ struct CameraView: View {
 
     @StateObject private var camera = CameraManager()
 
-    @State private var saveError = false
     @State private var isSaving = false
-    @State private var showSettingsHint = false
+    @State private var saveError = false
+
+    // MARK: Nakładka
+
+    @State private var referenceImage: UIImage?
+    @State private var overlayEnabled = true
+    @State private var overlayOpacity = 0.45
+
+    private var hasReferenceImage: Bool {
+        referenceImage != nil
+    }
+
+    // MARK: - Główny widok
 
     var body: some View {
         NavigationStack {
@@ -77,21 +87,16 @@ struct CameraView: View {
                     .foregroundStyle(.white)
                 }
             }
-
-            // Uruchomienie aparatu
             .onAppear {
+                loadReferenceImage()
                 camera.start()
             }
-
-            // Zatrzymanie aparatu po zamknięciu ekranu
             .onDisappear {
                 camera.stop()
+                referenceImage = nil
             }
-
-            // Ponowne sprawdzenie uprawnień
-            // po powrocie z Ustawień iPhone'a
-            .onChange(of: scenePhase) { _, newPhase in
-                switch newPhase {
+            .onChange(of: scenePhase) { _, phase in
+                switch phase {
                 case .active:
                     camera.start()
 
@@ -102,17 +107,10 @@ struct CameraView: View {
                     break
                 }
             }
-
-            // Obsługa wykonanego zdjęcia
-            .onChange(of: camera.photoData) { _, newData in
-                guard let newData else {
-                    return
-                }
-
-                savePhoto(newData)
+            .onChange(of: camera.photoData) { _, data in
+                guard let data else { return }
+                savePhoto(data)
             }
-
-            // Błąd zapisu fotografii
             .alert(
                 "Nie udało się zapisać zdjęcia",
                 isPresented: $saveError
@@ -120,11 +118,9 @@ struct CameraView: View {
                 Button("OK", role: .cancel) {}
             } message: {
                 Text(
-                    "Spróbuj ponownie wykonać zdjęcie."
+                    "Nie udało się zapisać fotografii. Spróbuj ponownie."
                 )
             }
-
-            // Błąd aparatu
             .alert(
                 "Błąd aparatu",
                 isPresented: Binding(
@@ -145,42 +141,95 @@ struct CameraView: View {
         }
     }
 
-    // MARK: - Widok aparatu
+    // MARK: - Podgląd i sterowanie
 
     private var cameraContent: some View {
         VStack(spacing: 0) {
 
-            CameraPreview(session: camera.session)
-                .frame(maxWidth: .infinity)
-                .frame(maxHeight: .infinity)
-                .clipped()
+            GeometryReader { geometry in
+                ZStack {
+                    // Obraz na żywo z aparatu
+                    CameraPreview(session: camera.session)
+                        .frame(
+                            width: geometry.size.width,
+                            height: geometry.size.height
+                        )
+                        .clipped()
 
+                    // Poprzednia fotografia jako nakładka
+                    if overlayEnabled,
+                       let referenceImage {
+
+                        Image(uiImage: referenceImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(
+                                width: geometry.size.width,
+                                height: geometry.size.height
+                            )
+                            .clipped()
+                            .opacity(overlayOpacity)
+                            .allowsHitTesting(false)
+                    }
+
+                    // Oznaczenie aktywnej nakładki
+                    if overlayEnabled && hasReferenceImage {
+                        VStack {
+                            HStack {
+                                Label(
+                                    "Poprzednie zdjęcie",
+                                    systemImage: "square.on.square"
+                                )
+                                .font(.caption)
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 8)
+                                .background(
+                                    .black.opacity(0.65),
+                                    in: Capsule()
+                                )
+
+                                Spacer()
+                            }
+
+                            Spacer()
+                        }
+                        .padding(12)
+                        .allowsHitTesting(false)
+                    }
+                }
+                .frame(
+                    width: geometry.size.width,
+                    height: geometry.size.height
+                )
+                .clipped()
+            }
+
+            // Panel pod podglądem
             VStack(spacing: 16) {
 
-                Text("Ustaw zmianę skórną w kadrze")
-                    .font(.subheadline)
-                    .foregroundStyle(.white)
+                if hasReferenceImage {
+                    overlayControls
+                } else {
+                    Text(
+                        "To pierwsze zdjęcie tego znamienia. Przy kolejnej fotografii pojawi się nakładka poprzedniego kadru."
+                    )
+                    .font(.caption)
+                    .foregroundStyle(.white.opacity(0.7))
+                    .multilineTextAlignment(.center)
+                }
 
                 Button {
                     camera.capture()
                 } label: {
                     ZStack {
                         Circle()
-                            .stroke(
-                                Color.white,
-                                lineWidth: 4
-                            )
-                            .frame(
-                                width: 76,
-                                height: 76
-                            )
+                            .stroke(.white, lineWidth: 4)
+                            .frame(width: 76, height: 76)
 
                         Circle()
-                            .fill(Color.white)
-                            .frame(
-                                width: 60,
-                                height: 60
-                            )
+                            .fill(.white)
+                            .frame(width: 60, height: 60)
                     }
                 }
                 .disabled(isSaving)
@@ -191,12 +240,76 @@ struct CameraView: View {
                         .tint(.white)
                         .foregroundStyle(.white)
                 }
-
             }
-            .padding(.vertical, 20)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 18)
             .frame(maxWidth: .infinity)
             .background(Color.black)
         }
+    }
+
+    // MARK: - Sterowanie nakładką
+
+    private var overlayControls: some View {
+        VStack(spacing: 12) {
+
+            Toggle(isOn: $overlayEnabled) {
+                Label(
+                    "Nakładka poprzedniego zdjęcia",
+                    systemImage: "square.on.square"
+                )
+                .font(.subheadline)
+                .foregroundStyle(.white)
+            }
+            .tint(.teal)
+
+            if overlayEnabled {
+                HStack(spacing: 12) {
+                    Image(systemName: "circle.lefthalf.filled")
+                        .foregroundStyle(.white.opacity(0.7))
+
+                    Slider(
+                        value: $overlayOpacity,
+                        in: 0.1...0.9
+                    )
+                    .tint(.teal)
+                    .accessibilityLabel(
+                        "Przezroczystość nakładki"
+                    )
+
+                    Text("\(Int(overlayOpacity * 100))%")
+                        .font(.caption.monospacedDigit())
+                        .foregroundStyle(.white)
+                        .frame(width: 40)
+                }
+            }
+
+            Text(
+                "Dopasuj położenie aparatu do poprzedniego zdjęcia. Nakładka nie zostanie zapisana na fotografii."
+            )
+            .font(.caption2)
+            .foregroundStyle(.white.opacity(0.65))
+            .multilineTextAlignment(.center)
+        }
+    }
+
+    // MARK: - Wczytywanie poprzedniego kadru
+
+    private func loadReferenceImage() {
+        let urls = lesionService.photoURLs(for: lesionID)
+
+        guard let lastURL = urls.last else {
+            referenceImage = nil
+            overlayEnabled = false
+            return
+        }
+
+        referenceImage = UIImage(
+            contentsOfFile: lastURL.path
+        )
+
+        overlayEnabled = referenceImage != nil
+        overlayOpacity = 0.45
     }
 
     // MARK: - Brak uprawnienia do aparatu
@@ -233,7 +346,6 @@ struct CameraView: View {
                 dismiss()
             }
             .foregroundStyle(.white)
-
         }
         .padding(24)
     }
@@ -250,12 +362,10 @@ struct CameraView: View {
         UIApplication.shared.open(url)
     }
 
-    // MARK: - Zapisywanie zdjęcia
+    // MARK: - Zapisywanie fotografii
 
     private func savePhoto(_ data: Data) {
-        guard !isSaving else {
-            return
-        }
+        guard !isSaving else { return }
 
         isSaving = true
 
@@ -275,8 +385,10 @@ struct CameraView: View {
     }
 }
 
+// MARK: - Aparat podczas dodawania nowego znamienia
 
 struct DraftCameraView: View {
+
     let onCaptured: (Data) -> Void
 
     @Environment(\.dismiss) private var dismiss
@@ -290,50 +402,9 @@ struct DraftCameraView: View {
                 Color.black.ignoresSafeArea()
 
                 if camera.permissionDenied {
-                    VStack(spacing: 20) {
-                        Image(systemName: "camera.slash")
-                            .font(.system(size: 48))
-
-                        Text("Brak dostępu do aparatu")
-                            .font(.headline)
-
-                        Text("Zezwól DermaTrack na dostęp do aparatu w Ustawieniach iPhone'a.")
-                            .multilineTextAlignment(.center)
-
-                        Button("Otwórz Ustawienia") {
-                            guard let url = URL(
-                                string: UIApplication.openSettingsURLString
-                            ) else { return }
-
-                            UIApplication.shared.open(url)
-                        }
-                        .buttonStyle(.borderedProminent)
-                    }
-                    .foregroundStyle(.white)
-                    .padding()
+                    permissionDeniedContent
                 } else {
-                    VStack(spacing: 16) {
-                        CameraPreview(session: camera.session)
-                            .frame(maxWidth: .infinity)
-                            .frame(maxHeight: .infinity)
-                            .clipped()
-
-                        Button {
-                            camera.capture()
-                        } label: {
-                            ZStack {
-                                Circle()
-                                    .stroke(.white, lineWidth: 4)
-                                    .frame(width: 76, height: 76)
-
-                                Circle()
-                                    .fill(.white)
-                                    .frame(width: 60, height: 60)
-                            }
-                        }
-                        .accessibilityLabel("Wykonaj zdjęcie")
-                        .padding(.bottom, 20)
-                    }
+                    cameraContent
                 }
             }
             .navigationTitle("Zrób zdjęcie")
@@ -342,6 +413,7 @@ struct DraftCameraView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Anuluj") {
+                        camera.stop()
                         dismiss()
                     }
                     .foregroundStyle(.white)
@@ -354,10 +426,15 @@ struct DraftCameraView: View {
                 camera.stop()
             }
             .onChange(of: scenePhase) { _, phase in
-                if phase == .active {
+                switch phase {
+                case .active:
                     camera.start()
-                } else if phase == .background {
+
+                case .inactive, .background:
                     camera.stop()
+
+                @unknown default:
+                    break
                 }
             }
             .onChange(of: camera.photoData) { _, data in
@@ -370,9 +447,11 @@ struct DraftCameraView: View {
             .alert(
                 "Błąd aparatu",
                 isPresented: Binding(
-                    get: { camera.errorMessage != nil },
-                    set: {
-                        if !$0 {
+                    get: {
+                        camera.errorMessage != nil
+                    },
+                    set: { isPresented in
+                        if !isPresented {
                             camera.errorMessage = nil
                         }
                     }
@@ -384,5 +463,67 @@ struct DraftCameraView: View {
             }
         }
     }
-}
 
+    // MARK: - Podgląd aparatu
+
+    private var cameraContent: some View {
+        VStack(spacing: 16) {
+
+            CameraPreview(session: camera.session)
+                .frame(maxWidth: .infinity)
+                .frame(maxHeight: .infinity)
+                .clipped()
+
+            Button {
+                camera.capture()
+            } label: {
+                ZStack {
+                    Circle()
+                        .stroke(.white, lineWidth: 4)
+                        .frame(width: 76, height: 76)
+
+                    Circle()
+                        .fill(.white)
+                        .frame(width: 60, height: 60)
+                }
+            }
+            .accessibilityLabel("Wykonaj zdjęcie")
+            .padding(.bottom, 20)
+        }
+    }
+
+    // MARK: - Obsługa odmowy uprawnienia
+
+    private var permissionDeniedContent: some View {
+        VStack(spacing: 20) {
+
+            Image(systemName: "camera.slash")
+                .font(.system(size: 48))
+
+            Text("Brak dostępu do aparatu")
+                .font(.headline)
+
+            Text(
+                "Zezwól DermaTrack na dostęp do aparatu w Ustawieniach iPhone'a."
+            )
+            .multilineTextAlignment(.center)
+
+            Button("Otwórz Ustawienia") {
+                guard let url = URL(
+                    string: UIApplication.openSettingsURLString
+                ) else {
+                    return
+                }
+
+                UIApplication.shared.open(url)
+            }
+            .buttonStyle(.borderedProminent)
+
+            Button("Zamknij") {
+                dismiss()
+            }
+        }
+        .foregroundStyle(.white)
+        .padding()
+    }
+}

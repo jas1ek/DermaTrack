@@ -203,6 +203,17 @@ struct LesionDetailView: View {
                             .foregroundStyle(.secondary)
                     }
                 }
+                if photoURLs.count >= 2 {
+                    NavigationLink {
+                        PhotoComparisonView(lesionID: lesionID)
+                            .environmentObject(lesionService)
+                    } label: {
+                        Label(
+                            "Porównaj zdjęcia",
+                            systemImage: "rectangle.split.2x1"
+                        )
+                    }
+                }
 
                 if photoURLs.isEmpty {
                     ContentUnavailableView(
