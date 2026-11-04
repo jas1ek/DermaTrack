@@ -22,6 +22,9 @@ struct AddLesionTestView: View {
     @State private var historyStatus = ""
     
     @State private var downloadedImage: UIImage?
+    @State private var sharingStatus = ""
+
+    private let sharingService = LesionSharingService()
 
     private let lesionService = LesionBackendService()
     private let photoService = PhotoStorageService()
@@ -56,6 +59,31 @@ struct AddLesionTestView: View {
             }
             .buttonStyle(.bordered)
             .disabled(isWorking)
+            
+            // Test udostępniania znamienia dermatologowi
+            Button("Udostępnij znamię dermatologowi") {
+                Task {
+                    await shareTestLesion()
+                }
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(isWorking)
+            
+            
+            Button("Cofnij udostępnienie dermatologowi") {
+                Task {
+                    await revokeTestLesion()
+                }
+            }
+            .buttonStyle(.bordered)
+            .tint(.red)
+            .disabled(isWorking)
+
+
+            Text(sharingStatus)
+                .font(.caption)
+                .multilineTextAlignment(.center)
+                .textSelection(.enabled)
 
             Text(historyStatus)
                 .font(.caption)
@@ -198,6 +226,64 @@ struct AddLesionTestView: View {
             historyStatus = "Błąd pobierania: \(error.localizedDescription)"
         }
     }
+    
+    
+    private func shareTestLesion() async {
+        isWorking = true
+        defer { isWorking = false }
+
+        guard let lesionID = UUID(
+            uuidString: "b09df69a-ae8f-4948-b468-cbe7b1c6e9b4"
+        ),
+        let dermatologistID = UUID(
+            uuidString: "49e95954-4aec-4519-946a-d2bdcf00924f"
+        ) else {
+            sharingStatus = "Nieprawidłowy identyfikator UUID."
+            return
+        }
+
+        do {
+            try await sharingService.shareLesion(
+                lesionID: lesionID,
+                dermatologistID: dermatologistID
+            )
+
+            sharingStatus = "SUKCES: Znamię udostępnione dermatologowi."
+
+        } catch {
+            sharingStatus = "BŁĄD: \(error.localizedDescription)"
+        }
+    }
+    
+    
+    private func revokeTestLesion() async {
+        isWorking = true
+        defer { isWorking = false }
+
+        guard let lesionID = UUID(
+            uuidString: "b09df69a-ae8f-4948-b468-cbe7b1c6e9b4"
+        ),
+        let dermatologistID = UUID(
+            uuidString: "49e95954-4aec-4519-946a-d2bdcf00924f"
+        ) else {
+            sharingStatus = "Nieprawidłowy identyfikator UUID."
+            return
+        }
+
+        do {
+            try await sharingService.revokeShare(
+                lesionID: lesionID,
+                dermatologistID: dermatologistID
+            )
+
+            sharingStatus = "Wysłano żądanie cofnięcia udostępnienia."
+
+        } catch {
+            sharingStatus = "BŁĄD: \(error.localizedDescription)"
+        }
+    }
+
+
 
 }
 

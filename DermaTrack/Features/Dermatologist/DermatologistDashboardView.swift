@@ -33,6 +33,7 @@ struct DermatologistDashboardView: View {
 
                     // Tymczasowy test zabezpieczeń Supabase
                     StorageTestView()
+                    DermatologistAccessTestView()
 
                 }
                 .padding()
