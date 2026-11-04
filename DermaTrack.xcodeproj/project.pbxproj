@@ -6,6 +6,10 @@
 	objectVersion = 110;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		98BE0DEF309B98E500BB8BB5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 98BE0DEE309B98E500BB8BB5 /* PrivacyInfo.xcprivacy */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		98A5B8B530798560001A0C4A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +31,7 @@
 		98A5B8A73079855F001A0C4A /* DermaTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DermaTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98A5B8B430798560001A0C4A /* DermaTrackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DermaTrackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		98A5B8BE30798560001A0C4A /* DermaTrackUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DermaTrackUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		98BE0DEE309B98E500BB8BB5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -69,6 +74,7 @@
 		98A5B89E3079855F001A0C4A = {
 			isa = PBXGroup;
 			children = (
+				98BE0DEE309B98E500BB8BB5 /* PrivacyInfo.xcprivacy */,
 				98A5B8A93079855F001A0C4A /* DermaTrack */,
 				98A5B8B730798560001A0C4A /* DermaTrackTests */,
 				98A5B8C130798560001A0C4A /* DermaTrackUITests */,
@@ -157,7 +163,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2700;
-				LastUpgradeCheck = 2700;
+				LastUpgradeCheck = 2710;
 				TargetAttributes = {
 					98A5B8A63079855F001A0C4A = {
 						CreatedOnToolsVersion = 27.0;
@@ -197,6 +203,7 @@
 		98A5B8A53079855F001A0C4A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			files = (
+				98BE0DEF309B98E500BB8BB5 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 		};
 		98A5B8B230798560001A0C4A /* Resources */ = {
@@ -301,6 +308,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -357,6 +365,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -372,7 +381,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "DermaTrack potrzebuje dostępu do aparatu, aby wykonywać zdjęcia zmian skórnych i dokumentować je w czasie.";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "DermaTrack korzysta z lokalizacji podczas używania aplikacji, aby wyszukiwać gabinety dermatologiczne w pobliżu.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "DermaTrack korzysta z lokalizacji podczas używania aplikacji, aby wyszukiwać gabinety dermatologiczne w pobliżu.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "DermaTrack potrzebuje dostępu do biblioteki zdjęć, aby umożliwić przeglądanie i dodawanie wybranych fotografii do historii zmian skórnych.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -406,7 +415,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "DermaTrack potrzebuje dostępu do aparatu, aby wykonywać zdjęcia zmian skórnych i dokumentować je w czasie.";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "DermaTrack korzysta z lokalizacji podczas używania aplikacji, aby wyszukiwać gabinety dermatologiczne w pobliżu.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "DermaTrack korzysta z lokalizacji podczas używania aplikacji, aby wyszukiwać gabinety dermatologiczne w pobliżu.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "DermaTrack potrzebuje dostępu do biblioteki zdjęć, aby umożliwić przeglądanie i dodawanie wybranych fotografii do historii zmian skórnych.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

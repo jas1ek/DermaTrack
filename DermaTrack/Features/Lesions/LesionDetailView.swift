@@ -12,12 +12,15 @@ struct LesionDetailView: View {
 
     @State private var showEdit = false
     @State private var showingCamera = false
+
     @State private var selectedPhoto: PhotosPickerItem?
+    @State private var isImporting = false
 
     @State private var showDeleteConfirmation = false
+    @State private var photoToDelete: URL?
+
     @State private var showPhotoError = false
     @State private var photoErrorMessage = ""
-    @State private var isImporting = false
 
     // MARK: - Aktualna zmiana
 
@@ -27,16 +30,14 @@ struct LesionDetailView: View {
         }
     }
 
-    // MARK: - Zdjęcia zapisane na urządzeniu
+    // MARK: - Historia zdjec
 
     private var photoURLs: [URL] {
-        // Obserwujemy aktualizacje historii fotografii.
         _ = lesionService.photoVersion
-
         return lesionService.photoURLs(for: lesionID)
     }
 
-    // MARK: - Widok główny
+    // MARK: - Widok glowny
 
     var body: some View {
         Group {
@@ -46,16 +47,12 @@ struct LesionDetailView: View {
                 ContentUnavailableView(
                     "Nie znaleziono zmiany",
                     systemImage: "exclamationmark.triangle",
-                    description: Text(
-                        "Zmiana mogła zostać usunięta."
-                    )
+                    description: Text("Zmiana mogla zostac usunieta.")
                 )
             }
         }
-        .navigationTitle("Szczegóły zmiany")
+        .navigationTitle("Szczegoly zmiany")
         .navigationBarTitleDisplayMode(.inline)
-
-        // Przycisk edycji
         .toolbar {
             if lesion != nil {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -66,7 +63,7 @@ struct LesionDetailView: View {
             }
         }
 
-        // Formularz edycji
+        // Edycja istniejacej zmiany
         .sheet(isPresented: $showEdit) {
             if let lesion {
                 AddLesionView(existingLesion: lesion)
@@ -74,66 +71,64 @@ struct LesionDetailView: View {
             }
         }
 
-        // Pełnoekranowy aparat
+        // Aparat AVFoundation
         .fullScreenCover(isPresented: $showingCamera) {
             CameraView(lesionID: lesionID)
                 .environmentObject(lesionService)
         }
 
-        // Import zdjęcia z galerii
-        .onChange(of: selectedPhoto) { _, newItem in
-            guard let newItem else { return }
+        // Import tylko zdjec wybranych przez uzytkownika
+        .onChange(of: selectedPhoto) { _, item in
+            guard let item else { return }
 
             Task {
-                isImporting = true
-                defer {
-                    isImporting = false
-                    selectedPhoto = nil
-                }
-
-                do {
-                    guard let data =
-                        try await newItem.loadTransferable(
-                            type: Data.self
-                        ) else {
-                        photoErrorMessage =
-                            "Nie udało się odczytać zdjęcia."
-                        showPhotoError = true
-                        return
-                    }
-
-                    try lesionService.addPhoto(
-                        data,
-                        to: lesionID
-                    )
-
-                } catch {
-                    photoErrorMessage =
-                        "Nie udało się dodać fotografii: \(error.localizedDescription)"
-                    showPhotoError = true
-                }
+                await importPhoto(item)
             }
         }
 
-        // Potwierdzenie usunięcia zmiany
+        // Usuwanie calej zmiany
         .confirmationDialog(
-            "Usunąć zmianę i wszystkie jej zdjęcia?",
+            "Usunac zmiane wraz ze wszystkimi zdjeciami?",
             isPresented: $showDeleteConfirmation,
             titleVisibility: .visible
         ) {
-            Button("Usuń zmianę", role: .destructive) {
+            Button("Usun zmiane", role: .destructive) {
                 lesionService.delete(id: lesionID)
                 dismiss()
             }
-
-            Button("Anuluj", role: .cancel) {}
         } message: {
-            Text("Tej operacji nie można cofnąć.")
+            Text("Tej operacji nie mozna cofnac.")
         }
 
-        // Komunikat błędu fotografii
+        // Usuwanie pojedynczego zdjecia
+        .confirmationDialog(
+            "Usunac wybrane zdjecie?",
+            isPresented: Binding(
+                get: { photoToDelete != nil },
+                set: { if !$0 { photoToDelete = nil } }
+            ),
+            titleVisibility: .visible
+        ) {
+            Button("Usun zdjecie", role: .destructive) {
+                if let url = photoToDelete {
+                    lesionService.deletePhoto(
+                        at: url,
+                        for: lesionID
+                    )
+                }
+                photoToDelete = nil
+            }
+
+            Button("Anuluj", role: .cancel) {
+                photoToDelete = nil
+            }
+        } message: {
+            Text("Fotografia zostanie usunieta z lokalnej dokumentacji.")
+        }
+
+        // Bledy importowania
         .alert(
-            "Błąd zdjęcia",
+            "Nie udalo sie dodac zdjecia",
             isPresented: $showPhotoError
         ) {
             Button("OK", role: .cancel) {}
@@ -142,12 +137,10 @@ struct LesionDetailView: View {
         }
     }
 
-    // MARK: - Zawartość ekranu
+    // MARK: - Zawartosc ekranu
 
     private func lesionContent(_ lesion: Lesion) -> some View {
         List {
-
-            // MARK: Informacje
 
             Section("Informacje") {
                 LabeledContent(
@@ -169,8 +162,6 @@ struct LesionDetailView: View {
                 )
             }
 
-            // MARK: Notatki
-
             Section("Notatki") {
                 if lesion.notes.isEmpty {
                     Text("Brak notatek")
@@ -180,37 +171,47 @@ struct LesionDetailView: View {
                 }
             }
 
-            // MARK: Dokumentacja fotograficzna
+            Section("Historia zdjec") {
 
-            Section("Historia zdjęć") {
-
+                // Fotografowanie aparatem
                 Button {
                     showingCamera = true
                 } label: {
                     Label(
-                        "Zrób zdjęcie aparatem",
+                        "Zrob zdjecie aparatem",
                         systemImage: "camera.fill"
                     )
                 }
 
+                // Import przez PhotosPicker
                 PhotosPicker(
                     selection: $selectedPhoto,
-                    matching: .images
+                    matching: .images,
+                    preferredItemEncoding: .automatic
                 ) {
                     Label(
-                        "Dodaj zdjęcie z galerii",
+                        "Dodaj zdjecie z galerii",
                         systemImage: "photo.on.rectangle"
                     )
                 }
                 .disabled(isImporting)
 
                 if isImporting {
-                    ProgressView("Importowanie zdjęcia...")
+                    HStack {
+                        ProgressView()
+                        Text("Importowanie fotografii...")
+                            .foregroundStyle(.secondary)
+                    }
                 }
 
                 if photoURLs.isEmpty {
-                    Text("Nie dodano jeszcze zdjęć.")
-                        .foregroundStyle(.secondary)
+                    ContentUnavailableView(
+                        "Brak fotografii",
+                        systemImage: "photo",
+                        description: Text(
+                            "Dodaj pierwsze zdjecie, aby rozpoczac historie obserwacji."
+                        )
+                    )
                 } else {
                     ForEach(photoURLs, id: \.self) { url in
                         photoRow(url)
@@ -218,14 +219,12 @@ struct LesionDetailView: View {
                 }
             }
 
-            // MARK: Usuwanie całej zmiany
-
             Section {
                 Button(role: .destructive) {
                     showDeleteConfirmation = true
                 } label: {
                     Label(
-                        "Usuń zmianę",
+                        "Usun zmiane",
                         systemImage: "trash"
                     )
                 }
@@ -233,14 +232,12 @@ struct LesionDetailView: View {
         }
     }
 
-    // MARK: - Jeden element historii zdjęć
+    // MARK: - Element historii zdjec
 
     private func photoRow(_ url: URL) -> some View {
         VStack(alignment: .leading, spacing: 12) {
 
-            if let image = UIImage(
-                contentsOfFile: url.path
-            ) {
+            if let image = UIImage(contentsOfFile: url.path) {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
@@ -251,35 +248,84 @@ struct LesionDetailView: View {
                     )
             } else {
                 Label(
-                    "Nie można otworzyć zdjęcia",
+                    "Nie mozna odczytac zdjecia",
                     systemImage: "exclamationmark.triangle"
                 )
                 .foregroundStyle(.secondary)
             }
 
             HStack {
-                Text(url.lastPathComponent)
-                    .font(.caption2)
+                if let date = creationDate(for: url) {
+                    Text(
+                        date.formatted(
+                            date: .abbreviated,
+                            time: .shortened
+                        )
+                    )
+                    .font(.caption)
                     .foregroundStyle(.secondary)
-                    .lineLimit(1)
-                    .truncationMode(.middle)
+                } else {
+                    Text("Fotografia")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
 
                 Spacer()
 
                 Button(role: .destructive) {
-                    lesionService.deletePhoto(
-                        at: url,
-                        for: lesionID
-                    )
+                    photoToDelete = url
                 } label: {
-                    Label(
-                        "Usuń",
-                        systemImage: "trash"
-                    )
+                    Label("Usun", systemImage: "trash")
                 }
                 .buttonStyle(.borderless)
             }
         }
         .padding(.vertical, 8)
     }
+
+    // MARK: - Odczyt daty pliku
+
+    private func creationDate(for url: URL) -> Date? {
+        let values = try? url.resourceValues(
+            forKeys: [.creationDateKey]
+        )
+
+        return values?.creationDate
+    }
+
+    // MARK: - Import przez PhotosPicker
+
+    @MainActor
+    private func importPhoto(_ item: PhotosPickerItem) async {
+        guard !isImporting else { return }
+
+        isImporting = true
+
+        defer {
+            isImporting = false
+            selectedPhoto = nil
+        }
+
+        do {
+            guard let data = try await item.loadTransferable(
+                type: Data.self
+            ) else {
+                photoErrorMessage =
+                    "Nie udalo sie odczytac wybranej fotografii."
+                showPhotoError = true
+                return
+            }
+
+            try lesionService.addPhoto(
+                data,
+                to: lesionID
+            )
+
+        } catch {
+            photoErrorMessage =
+                "Blad importu: \(error.localizedDescription)"
+            showPhotoError = true
+        }
+    }
 }
+

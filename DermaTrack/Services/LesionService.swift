@@ -75,7 +75,10 @@ final class LesionService: ObservableObject {
         let filename = "\(timestamp)-\(UUID().uuidString).jpg"
         let url = directory.appendingPathComponent(filename)
 
-        try jpegData.write(to: url, options: .atomic)
+        try jpegData.write(
+            to: url,
+            options: [.atomic, .completeFileProtection]
+        )
         photoVersion += 1
     }
 
