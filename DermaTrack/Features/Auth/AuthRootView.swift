@@ -42,36 +42,43 @@ struct AuthRootView: View {
 
     //Panel pacjenta
 
+
     private var patientView: some View {
         NavigationStack {
-            VStack(spacing: 24) {
+            ScrollView {
+                VStack(spacing: 24) {
 
-                Image(systemName: "checkmark.shield.fill")
-                    .font(.system(size: 56))
-                    .foregroundStyle(.green)
+                    Image(systemName: "checkmark.shield.fill")
+                        .font(.system(size: 56))
+                        .foregroundStyle(.green)
 
-                Text("DermaTrack")
-                    .font(.largeTitle)
-                    .bold()
+                    Text("DermaTrack")
+                        .font(.largeTitle)
+                        .bold()
 
-                Text("Zalogowano pomyślnie")
-                    .font(.headline)
+                    Text("Zalogowano pomyślnie")
+                        .font(.headline)
 
-                Text("Witaj w panelu pacjenta")
-                    .foregroundStyle(.secondary)
-                
-                StorageTestView()
-                RoleSecurityTestView()
+                    Text("Witaj w panelu pacjenta")
+                        .foregroundStyle(.secondary)
 
-                Button("Wyloguj się") {
-                    Task {
-                        await auth.logout()
+                    StorageTestView()
+                    RoleSecurityTestView()
+                    AddLesionTestView()
+
+                    // Wylogowanie
+                    Button("Wyloguj się") {
+                        Task {
+                            await auth.logout()
+                        }
                     }
+                    .buttonStyle(.borderedProminent)
+
                 }
-                .buttonStyle(.borderedProminent)
+                .frame(maxWidth: .infinity)
+                .padding()
             }
-            .padding()
-            .navigationTitle("Panel pacjenta")
+            .scrollDismissesKeyboard(.interactively)
         }
     }
 
