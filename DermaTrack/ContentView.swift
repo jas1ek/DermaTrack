@@ -52,6 +52,8 @@ struct ContentView: View {
             }
         }
         .environmentObject(lesionService)
+        .task { await lesionService.refresh() }
+        .onDisappear { lesionService.clearSession() }
         .onOpenURL { url in
             handleDeepLink(url)
         }

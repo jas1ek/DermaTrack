@@ -6,11 +6,15 @@ struct LesionsListView: View {
 
     @State private var showingAddLesion = false
     @State private var editMode: EditMode = .inactive
+    @State private var showDeleteError = false
+    @State private var deleteErrorMessage = ""
 
     var body: some View {
         NavigationStack {
             Group {
-                if lesionService.lesions.isEmpty {
+                if lesionService.isLoading && lesionService.lesions.isEmpty {
+                    ProgressView("Pobieranie znamion...")
+                } else if lesionService.lesions.isEmpty {
                     ContentUnavailableView(
                         "Brak zmian",
                         systemImage: "plus.circle",
@@ -46,12 +50,31 @@ struct LesionsListView: View {
                                 .padding(.vertical, 5)
                             }
                         }
-                        .onDelete(perform: lesionService.delete)
+                        .onDelete { offsets in
+                            let ids = offsets.compactMap { index in
+                                lesionService.lesions.indices.contains(index)
+                                ? lesionService.lesions[index].id : nil
+                            }
+                            Task {
+                                for id in ids {
+                                    do { try await lesionService.delete(id: id) }
+                                    catch {
+                                        deleteErrorMessage = error.localizedDescription
+                                        showDeleteError = true
+                                        break
+                                    }
+                                }
+                            }
+                        }
                     }
                     .environment(\.editMode, $editMode)
                 }
             }
             .navigationTitle("Moje zmiany")
+            .refreshable { await lesionService.refresh() }
+            .alert("Nie udało się usunąć znamienia", isPresented: $showDeleteError) {
+                Button("OK", role: .cancel) {}
+            } message: { Text(deleteErrorMessage) }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     if !lesionService.lesions.isEmpty {

@@ -22,6 +22,9 @@ struct AddLesionView: View {
     @State private var showingCamera = false
     @State private var isImporting = false
     @State private var showSaveError = false
+    @State private var isSaving = false
+    @State private var showLesionError = false
+    @State private var lesionErrorMessage = ""
     @State private var showImportError = false
 
     // Chroni przed dodaniem drugiego wpisu po błędzie zapisu
@@ -211,12 +214,12 @@ struct AddLesionView: View {
 
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Zapisz") {
-                        saveLesion()
+                        Task { await saveLesion() }
                     }
                     .disabled(
                         location.trimmingCharacters(
                             in: .whitespacesAndNewlines
-                        ).isEmpty || isImporting
+                        ).isEmpty || isImporting || isSaving
                     )
                 }
             }
@@ -250,6 +253,11 @@ struct AddLesionView: View {
                     }
                 }
             }
+            .alert("Błąd Supabase", isPresented: $showLesionError) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(lesionErrorMessage)
+            }
             .alert(
                 "Nie udało się wczytać zdjęcia",
                 isPresented: $showImportError
@@ -263,7 +271,7 @@ struct AddLesionView: View {
                 Button("OK", role: .cancel) {}
             } message: {
                 Text(
-                    "Wpis został zachowany lokalnie. Spróbuj ponownie zapisać pozostałe zdjęcia."
+                    "Znamię zostało zapisane w Supabase, ale nie udało się zapisać wszystkich zdjęć lokalnie. Ponów zapis, aby dokończyć."
                 )
             }
         }
@@ -271,58 +279,54 @@ struct AddLesionView: View {
 
     // MARK: - Zapis zmiany i zdjęć
 
-    private func saveLesion() {
-        let trimmedLocation = location.trimmingCharacters(
-            in: .whitespacesAndNewlines
-        )
+    private func saveLesion() async {
+        guard !isSaving else { return }
+        isSaving = true
+        defer { isSaving = false }
+
+        let trimmedLocation = location.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedLocation.isEmpty else { return }
 
         let lesionID: UUID
-
-        if var lesion = existingLesion {
-            lesion.name = selectedType
-            lesion.location = trimmedLocation
-            lesion.notes = notes
-
-            lesionService.update(lesion)
-            lesionID = lesion.id
-
-        } else if let previousID = createdLesionID {
-            lesionID = previousID
-
-            if let oldLesion = lesionService.lesions.first(
-                where: { $0.id == previousID }
-            ) {
-                var updated = oldLesion
-                updated.name = selectedType
-                updated.location = trimmedLocation
-                updated.notes = notes
-                lesionService.update(updated)
+        do {
+            if var lesion = existingLesion {
+                lesion.name = selectedType
+                lesion.location = trimmedLocation
+                lesion.notes = notes
+                try await lesionService.update(lesion)
+                lesionID = lesion.id
+            } else if let previousID = createdLesionID {
+                lesionID = previousID
+                if let oldLesion = lesionService.lesions.first(where: { $0.id == previousID }) {
+                    var updated = oldLesion
+                    updated.name = selectedType
+                    updated.location = trimmedLocation
+                    updated.notes = notes
+                    try await lesionService.update(updated)
+                }
+            } else {
+                let newLesion = Lesion(
+                    name: selectedType,
+                    location: trimmedLocation,
+                    notes: notes,
+                    mapSide: initialMapSide,
+                    mapX: initialMapX,
+                    mapY: initialMapY
+                )
+                try await lesionService.add(newLesion)
+                lesionID = newLesion.id
+                createdLesionID = lesionID
             }
-
-        } else {
-            let newLesion = Lesion(
-                name: selectedType,
-                location: trimmedLocation,
-                notes: notes,
-                mapSide: initialMapSide,
-                mapX: initialMapX,
-                mapY: initialMapY
-            )
-
-            lesionService.add(newLesion)
-            lesionID = newLesion.id
-            createdLesionID = lesionID
+        } catch {
+            lesionErrorMessage = error.localizedDescription
+            showLesionError = true
+            return
         }
 
-        // Zapisuj zdjęcia pojedynczo.
-        // Usuń z kolejki dopiero po udanym zapisie.
+        // Temporary local photo staging. Supabase Storage is the next integration stage.
         while !stagedPhotos.isEmpty {
             do {
-                try lesionService.addPhoto(
-                    stagedPhotos[0],
-                    to: lesionID
-                )
-
+                try lesionService.addPhoto(stagedPhotos[0], to: lesionID)
                 stagedPhotos.removeFirst()
             } catch {
                 showSaveError = true
@@ -332,6 +336,7 @@ struct AddLesionView: View {
 
         dismiss()
     }
+
 }
 
 #Preview {

@@ -17,6 +17,8 @@ struct LesionDetailView: View {
     @State private var isImporting = false
 
     @State private var showDeleteConfirmation = false
+    @State private var showRemoteDeleteError = false
+    @State private var remoteDeleteErrorMessage = ""
     @State private var photoToDelete: URL?
 
     @State private var showPhotoError = false
@@ -93,12 +95,23 @@ struct LesionDetailView: View {
             titleVisibility: .visible
         ) {
             Button("Usun zmiane", role: .destructive) {
-                lesionService.delete(id: lesionID)
-                dismiss()
+                Task {
+                    do {
+                        try await lesionService.delete(id: lesionID)
+                        dismiss()
+                    } catch {
+                        remoteDeleteErrorMessage = error.localizedDescription
+                        showRemoteDeleteError = true
+                    }
+                }
             }
         } message: {
             Text("Tej operacji nie mozna cofnac.")
         }
+
+        .alert("Błąd usuwania znamienia", isPresented: $showRemoteDeleteError) {
+            Button("OK", role: .cancel) {}
+        } message: { Text(remoteDeleteErrorMessage) }
 
         // Usuwanie pojedynczego zdjecia
         .confirmationDialog(
